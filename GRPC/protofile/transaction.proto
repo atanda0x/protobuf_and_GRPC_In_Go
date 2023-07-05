@@ -1,0 +1,17 @@
+syntax = "proto3";
+package protofiles;
+option go_package = "./";
+
+message TransferRequest {
+    string from = 1;
+    string to = 2;
+    float amount = 3;
+}
+
+message TransferResponse {
+    bool confirmation = 1;
+}
+
+service MoneyTransfered {
+    rpc MoneyTransfered (TransferRequest) returns (TransferResponse);
+}
