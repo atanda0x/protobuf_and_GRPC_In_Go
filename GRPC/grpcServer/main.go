@@ -20,7 +20,7 @@ type server struct {
 }
 
 func main() {
-
+	flag.Parse()
 	s := grpc.NewServer()
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
@@ -35,7 +35,7 @@ func main() {
 
 }
 
-func (s *server) MakeTransaction(ctx context.Context, in *pb.TransferRequest) (*pb.TransferResponse, error) {
+func (s *server) MoneyTransfered(ctx context.Context, in *pb.TransferRequest) (*pb.TransferResponse, error) {
 	// Business logic will come here
 	fmt.Println("Got amount ", in.Amount)
 	fmt.Println("Got from ", in.From)
