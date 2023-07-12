@@ -15,5 +15,5 @@ message TransactionResponse {
 }
 
 service MoneyTransaction {
-    rpc MoneyTransfer(TransactionRequest) returns (stream TransactionResponse) {}
+    rpc MoneyTransaction(TransactionRequest) returns (stream TransactionResponse) {}
 }

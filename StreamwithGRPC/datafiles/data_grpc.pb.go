@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MoneyTransactionClient interface {
-	MoneyTransfer(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (MoneyTransaction_MoneyTransferClient, error)
+	MoneyTransaction(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (MoneyTransaction_MoneyTransactionClient, error)
 }
 
 type moneyTransactionClient struct {
@@ -33,12 +33,12 @@ func NewMoneyTransactionClient(cc grpc.ClientConnInterface) MoneyTransactionClie
 	return &moneyTransactionClient{cc}
 }
 
-func (c *moneyTransactionClient) MoneyTransfer(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (MoneyTransaction_MoneyTransferClient, error) {
-	stream, err := c.cc.NewStream(ctx, &MoneyTransaction_ServiceDesc.Streams[0], "/datafiles.MoneyTransaction/MoneyTransfer", opts...)
+func (c *moneyTransactionClient) MoneyTransaction(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (MoneyTransaction_MoneyTransactionClient, error) {
+	stream, err := c.cc.NewStream(ctx, &MoneyTransaction_ServiceDesc.Streams[0], "/datafiles.MoneyTransaction/MoneyTransaction", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &moneyTransactionMoneyTransferClient{stream}
+	x := &moneyTransactionMoneyTransactionClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -48,16 +48,16 @@ func (c *moneyTransactionClient) MoneyTransfer(ctx context.Context, in *Transact
 	return x, nil
 }
 
-type MoneyTransaction_MoneyTransferClient interface {
+type MoneyTransaction_MoneyTransactionClient interface {
 	Recv() (*TransactionResponse, error)
 	grpc.ClientStream
 }
 
-type moneyTransactionMoneyTransferClient struct {
+type moneyTransactionMoneyTransactionClient struct {
 	grpc.ClientStream
 }
 
-func (x *moneyTransactionMoneyTransferClient) Recv() (*TransactionResponse, error) {
+func (x *moneyTransactionMoneyTransactionClient) Recv() (*TransactionResponse, error) {
 	m := new(TransactionResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func (x *moneyTransactionMoneyTransferClient) Recv() (*TransactionResponse, erro
 // All implementations must embed UnimplementedMoneyTransactionServer
 // for forward compatibility
 type MoneyTransactionServer interface {
-	MoneyTransfer(*TransactionRequest, MoneyTransaction_MoneyTransferServer) error
+	MoneyTransaction(*TransactionRequest, MoneyTransaction_MoneyTransactionServer) error
 	mustEmbedUnimplementedMoneyTransactionServer()
 }
 
@@ -77,8 +77,8 @@ type MoneyTransactionServer interface {
 type UnimplementedMoneyTransactionServer struct {
 }
 
-func (UnimplementedMoneyTransactionServer) MoneyTransfer(*TransactionRequest, MoneyTransaction_MoneyTransferServer) error {
-	return status.Errorf(codes.Unimplemented, "method MoneyTransfer not implemented")
+func (UnimplementedMoneyTransactionServer) MoneyTransaction(*TransactionRequest, MoneyTransaction_MoneyTransactionServer) error {
+	return status.Errorf(codes.Unimplemented, "method MoneyTransaction not implemented")
 }
 func (UnimplementedMoneyTransactionServer) mustEmbedUnimplementedMoneyTransactionServer() {}
 
@@ -93,24 +93,24 @@ func RegisterMoneyTransactionServer(s grpc.ServiceRegistrar, srv MoneyTransactio
 	s.RegisterService(&MoneyTransaction_ServiceDesc, srv)
 }
 
-func _MoneyTransaction_MoneyTransfer_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _MoneyTransaction_MoneyTransaction_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(TransactionRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(MoneyTransactionServer).MoneyTransfer(m, &moneyTransactionMoneyTransferServer{stream})
+	return srv.(MoneyTransactionServer).MoneyTransaction(m, &moneyTransactionMoneyTransactionServer{stream})
 }
 
-type MoneyTransaction_MoneyTransferServer interface {
+type MoneyTransaction_MoneyTransactionServer interface {
 	Send(*TransactionResponse) error
 	grpc.ServerStream
 }
 
-type moneyTransactionMoneyTransferServer struct {
+type moneyTransactionMoneyTransactionServer struct {
 	grpc.ServerStream
 }
 
-func (x *moneyTransactionMoneyTransferServer) Send(m *TransactionResponse) error {
+func (x *moneyTransactionMoneyTransactionServer) Send(m *TransactionResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -123,8 +123,8 @@ var MoneyTransaction_ServiceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "MoneyTransfer",
-			Handler:       _MoneyTransaction_MoneyTransfer_Handler,
+			StreamName:    "MoneyTransaction",
+			Handler:       _MoneyTransaction_MoneyTransaction_Handler,
 			ServerStreams: true,
 		},
 	},
