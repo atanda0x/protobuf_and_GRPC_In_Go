@@ -11,12 +11,12 @@ import (
 )
 
 var (
-	address = flag.String("add", "localhost:500051", "The address to connect")
+	address = flag.String("add", "localhost:50051", "The address to connect")
 )
 
 func ReceiveStream(client pb.MoneyTransactionClient, request *pb.TransactionRequest) {
 	log.Println("Started listening to the server stream!!!!")
-	stream, err := client.MoneyTransaction(context.Background(), request)
+	stream, err := client.MakeTransaction(context.Background(), request)
 	if err != nil {
 		log.Fatalf("%v.MakeTransaction(_) = _, %v", client, err)
 	}
