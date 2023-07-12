@@ -21,7 +21,7 @@ type server struct {
 	pb.UnimplementedMoneyTransactionServer
 }
 
-func (s *server) makeTransaction(in *pb.TransactionRequest, stream pb.MoneyTransaction_MoneyTransferServer) error {
+func (s *server) makeTransaction(in *pb.TransactionRequest, stream pb.MoneyTransaction_MoneyTransactionServer) error {
 	log.Printf("Got request for money.....")
 	log.Printf("Amount: $ %f, From A/c:%s, To A/c: %s", in.Amount, in.From, in.To)
 
