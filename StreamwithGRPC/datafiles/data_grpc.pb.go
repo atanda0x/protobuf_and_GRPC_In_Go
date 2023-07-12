@@ -18,27 +18,27 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// MoneyTransferClient is the client API for MoneyTransfer service.
+// MoneyTransactionClient is the client API for MoneyTransaction service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type MoneyTransferClient interface {
-	MoneyTransfer(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (MoneyTransfer_MoneyTransferClient, error)
+type MoneyTransactionClient interface {
+	MoneyTransfer(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (MoneyTransaction_MoneyTransferClient, error)
 }
 
-type moneyTransferClient struct {
+type moneyTransactionClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewMoneyTransferClient(cc grpc.ClientConnInterface) MoneyTransferClient {
-	return &moneyTransferClient{cc}
+func NewMoneyTransactionClient(cc grpc.ClientConnInterface) MoneyTransactionClient {
+	return &moneyTransactionClient{cc}
 }
 
-func (c *moneyTransferClient) MoneyTransfer(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (MoneyTransfer_MoneyTransferClient, error) {
-	stream, err := c.cc.NewStream(ctx, &MoneyTransfer_ServiceDesc.Streams[0], "/datafiles.MoneyTransfer/MoneyTransfer", opts...)
+func (c *moneyTransactionClient) MoneyTransfer(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (MoneyTransaction_MoneyTransferClient, error) {
+	stream, err := c.cc.NewStream(ctx, &MoneyTransaction_ServiceDesc.Streams[0], "/datafiles.MoneyTransaction/MoneyTransfer", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &moneyTransferMoneyTransferClient{stream}
+	x := &moneyTransactionMoneyTransferClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -48,16 +48,16 @@ func (c *moneyTransferClient) MoneyTransfer(ctx context.Context, in *Transaction
 	return x, nil
 }
 
-type MoneyTransfer_MoneyTransferClient interface {
+type MoneyTransaction_MoneyTransferClient interface {
 	Recv() (*TransactionResponse, error)
 	grpc.ClientStream
 }
 
-type moneyTransferMoneyTransferClient struct {
+type moneyTransactionMoneyTransferClient struct {
 	grpc.ClientStream
 }
 
-func (x *moneyTransferMoneyTransferClient) Recv() (*TransactionResponse, error) {
+func (x *moneyTransactionMoneyTransferClient) Recv() (*TransactionResponse, error) {
 	m := new(TransactionResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -65,66 +65,66 @@ func (x *moneyTransferMoneyTransferClient) Recv() (*TransactionResponse, error) 
 	return m, nil
 }
 
-// MoneyTransferServer is the server API for MoneyTransfer service.
-// All implementations must embed UnimplementedMoneyTransferServer
+// MoneyTransactionServer is the server API for MoneyTransaction service.
+// All implementations must embed UnimplementedMoneyTransactionServer
 // for forward compatibility
-type MoneyTransferServer interface {
-	MoneyTransfer(*TransactionRequest, MoneyTransfer_MoneyTransferServer) error
-	mustEmbedUnimplementedMoneyTransferServer()
+type MoneyTransactionServer interface {
+	MoneyTransfer(*TransactionRequest, MoneyTransaction_MoneyTransferServer) error
+	mustEmbedUnimplementedMoneyTransactionServer()
 }
 
-// UnimplementedMoneyTransferServer must be embedded to have forward compatible implementations.
-type UnimplementedMoneyTransferServer struct {
+// UnimplementedMoneyTransactionServer must be embedded to have forward compatible implementations.
+type UnimplementedMoneyTransactionServer struct {
 }
 
-func (UnimplementedMoneyTransferServer) MoneyTransfer(*TransactionRequest, MoneyTransfer_MoneyTransferServer) error {
+func (UnimplementedMoneyTransactionServer) MoneyTransfer(*TransactionRequest, MoneyTransaction_MoneyTransferServer) error {
 	return status.Errorf(codes.Unimplemented, "method MoneyTransfer not implemented")
 }
-func (UnimplementedMoneyTransferServer) mustEmbedUnimplementedMoneyTransferServer() {}
+func (UnimplementedMoneyTransactionServer) mustEmbedUnimplementedMoneyTransactionServer() {}
 
-// UnsafeMoneyTransferServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to MoneyTransferServer will
+// UnsafeMoneyTransactionServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to MoneyTransactionServer will
 // result in compilation errors.
-type UnsafeMoneyTransferServer interface {
-	mustEmbedUnimplementedMoneyTransferServer()
+type UnsafeMoneyTransactionServer interface {
+	mustEmbedUnimplementedMoneyTransactionServer()
 }
 
-func RegisterMoneyTransferServer(s grpc.ServiceRegistrar, srv MoneyTransferServer) {
-	s.RegisterService(&MoneyTransfer_ServiceDesc, srv)
+func RegisterMoneyTransactionServer(s grpc.ServiceRegistrar, srv MoneyTransactionServer) {
+	s.RegisterService(&MoneyTransaction_ServiceDesc, srv)
 }
 
-func _MoneyTransfer_MoneyTransfer_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _MoneyTransaction_MoneyTransfer_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(TransactionRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(MoneyTransferServer).MoneyTransfer(m, &moneyTransferMoneyTransferServer{stream})
+	return srv.(MoneyTransactionServer).MoneyTransfer(m, &moneyTransactionMoneyTransferServer{stream})
 }
 
-type MoneyTransfer_MoneyTransferServer interface {
+type MoneyTransaction_MoneyTransferServer interface {
 	Send(*TransactionResponse) error
 	grpc.ServerStream
 }
 
-type moneyTransferMoneyTransferServer struct {
+type moneyTransactionMoneyTransferServer struct {
 	grpc.ServerStream
 }
 
-func (x *moneyTransferMoneyTransferServer) Send(m *TransactionResponse) error {
+func (x *moneyTransactionMoneyTransferServer) Send(m *TransactionResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-// MoneyTransfer_ServiceDesc is the grpc.ServiceDesc for MoneyTransfer service.
+// MoneyTransaction_ServiceDesc is the grpc.ServiceDesc for MoneyTransaction service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var MoneyTransfer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "datafiles.MoneyTransfer",
-	HandlerType: (*MoneyTransferServer)(nil),
+var MoneyTransaction_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "datafiles.MoneyTransaction",
+	HandlerType: (*MoneyTransactionServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "MoneyTransfer",
-			Handler:       _MoneyTransfer_MoneyTransfer_Handler,
+			Handler:       _MoneyTransaction_MoneyTransfer_Handler,
 			ServerStreams: true,
 		},
 	},
