@@ -3,11 +3,11 @@ package main
 import (
 	"flag"
 	"log"
+	"time"
 
 	pb "github.com/atanda0x/protobuf-go/GRPC/protofile"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
 var (
@@ -15,7 +15,8 @@ var (
 )
 
 func main() {
-	conn, err := grpc.Dial(*address, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	flag.Parse()
+	conn, err := grpc.Dial(*address, grpc.WithInsecure())
 
 	if err != nil {
 		log.Fatalf("Did not connect: %v", err)
@@ -27,7 +28,9 @@ func main() {
 	to := "5678"
 	amount := float32(1250.75)
 
-	r, err := c.MoneyTransfered(context.Background(), &pb.TransferRequest{
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	r, err := c.MoneyTransfered(ctx, &pb.TransferRequest{
 		From:   from,
 		To:     to,
 		Amount: amount,
