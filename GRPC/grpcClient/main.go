@@ -24,8 +24,8 @@ func main() {
 	defer conn.Close()
 	c := pb.NewMoneyTransferedClient(conn)
 
-	from := "1234"
-	to := "5678"
+	from := "atanda0x"
+	to := "atanda nafiu"
 	amount := float32(1250.75)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
