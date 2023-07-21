@@ -45,8 +45,8 @@ func main() {
 	defer conn.Close()
 	client := pb.NewMoneyTransactionClient(conn)
 
-	from := "1234"
-	to := "5678"
+	from := "atanda0x"
+	to := "Atanda Nafiu"
 	amount := float32(1250.75)
 
 	ReceiveStream(client, &pb.TransactionRequest{From: from, To: to, Amount: amount})
